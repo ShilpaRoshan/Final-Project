@@ -5,12 +5,7 @@ const cookieSession = require("cookie-session");
 
 const csurf = require("csurf");
 
-const {
-    getLocations,
-    getPacketSize,
-    getTimeSlot,
-    getResultsINeedHelp,
-} = require("../db");
+const { getLocations, getResultsINeedHelp } = require("../db");
 
 const app = express();
 
@@ -39,8 +34,9 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 app.get("/user/id.json", (request, response) => {
+    request.session.userId = 1;
     response.json({
-        1: request.session.userId,
+        id: 1,
     });
     console.log("[id.json]", request.session.userId);
 });
@@ -51,25 +47,10 @@ app.get("/api/locations", (request, response) => {
     });
 });
 
-app.get("/api/packet-size", (request, response) => {
-    getPacketSize().then((results) => {
-        console.log("[getPacketSize-server]", results);
+app.get("/api/search", (request, response) => {
+    getResultsINeedHelp(request.query).then((results) => {
+        console.log("[getResultsINeedHelp-server]", results);
         response.json(results);
-    });
-});
-
-app.get("/api/time-slot", (request, response) => {
-    getTimeSlot().then((results) => {
-        console.log("[getTimeSlot-server]", results);
-        response.json(results);
-    });
-});
-
-app.get("/api/list/carriers", (request, response) => {
-    const { time_slot, size } = request.body;
-    getResultsINeedHelp({ time_slot, size }).then((results) => {
-        console.log("[getResultsINeedHelp]", results.time_slot, results.size);
-        response.json({ time_slot, size });
     });
 });
 

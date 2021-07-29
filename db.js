@@ -19,20 +19,7 @@ function getLocations() {
     });
 }
 
-function getPacketSize() {
-    return db.query(`SELECT size FROM availabilities`).then((results) => {
-        console.log("[getPacketSize-db]", results.rows);
-        return results.rows;
-    });
-}
-function getTimeSlot() {
-    return db.query(`SELECT time_slot FROM availabilities`).then((results) => {
-        console.log("[getTimeSlot-db]", results.rows);
-        return results.rows;
-    });
-}
-
-function getResultsINeedHelp({ time_slot, size }) {
+function getResultsINeedHelp({ time_slot, size, origin_id, destination_id }) {
     return db
         .query(
             `SELECT users.first_name, availabilities.time_slot, availabilities.size, origin.name AS origin_name,
@@ -44,11 +31,11 @@ function getResultsINeedHelp({ time_slot, size }) {
                     ON(origin.id = availabilities.origin_id)
                     LEFT JOIN locations AS destination
                     ON(destination.id = availabilities.destination_id) 
-                    WHERE availabilities.time_slot = $1 AND availabilities.size = $2;`,
-            [time_slot, size]
+                    WHERE availabilities.time_slot = $1 AND availabilities.size = $2 AND availabilities.origin_id = $3 AND availabilities.destination_id = $4;`,
+            [time_slot, size, origin_id, destination_id]
         )
         .then((results) => {
-            console.log("getResultsINeedHelp", results.rows);
+            console.log("getResultsINeedHelp-db", results.rows);
             return results.rows;
         });
 }
@@ -56,8 +43,7 @@ function getResultsINeedHelp({ time_slot, size }) {
 module.exports = {
     // allUsers,
     getLocations,
-    getPacketSize,
-    getTimeSlot,
+
     getResultsINeedHelp,
 };
 

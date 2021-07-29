@@ -53,3 +53,14 @@ CREATE TABLE availabilities(
 -- LEFT JOIN locations
 -- ON(locations.id = availabilities.origin_id)
 -- WHERE availabilities.time_slot = 'daily' AND availabilities.size = 'M';
+
+SELECT users.first_name, availabilities.time_slot, availabilities.size, origin.name AS origin_name,
+                    destination.name AS destination_name
+                    FROM users
+                    JOIN availabilities
+                    ON(availabilities.user_id = users.id)
+                    LEFT JOIN locations AS origin
+                    ON(origin.id = availabilities.origin_id)
+                    LEFT JOIN locations AS destination
+                    ON(destination.id = availabilities.destination_id) 
+                    WHERE availabilities.time_slot = 'daily' AND availabilities.size = 'M' AND availabilities.origin_id = 1 AND availabilities.destination_id = 2;
