@@ -46,19 +46,31 @@ export default function INeedHelp() {
     }
 
     function showResults() {
-        if (results.length == 0) {
-            return <li> We are Sorry!! Try again!!</li>;
-        }
         return results.map((result) => {
-            <li key={result.id}>
-                <div>
-                    <p>result.first_name</p>
-                    <p>result.origin_name</p>
-                    <p>result.destination_name</p>
-                    <p>result.size</p>
-                    <p>result.time_slot</p>
-                </div>
-            </li>;
+            return (
+                <li key={result.id}>
+                    <div>
+                        <h3>Name :</h3>
+                        <p>{result.first_name}</p>
+                    </div>
+                    <div>
+                        <h3>From :</h3>
+                        <p>{result.origin_name}</p>
+                    </div>
+                    <div>
+                        <h3>To :</h3>
+                        <p>{result.destination_name}</p>
+                    </div>
+                    <div>
+                        <h3>Size :</h3>
+                        <p>{result.size}</p>
+                    </div>
+                    <div>
+                        <h3>Time :</h3>
+                        <p>{result.time_slot}</p>
+                    </div>
+                </li>
+            );
         });
     }
 
