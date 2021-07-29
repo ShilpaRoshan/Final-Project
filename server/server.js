@@ -42,14 +42,15 @@ app.get("/user/id.json", (request, response) => {
 });
 app.get("/api/locations", (request, response) => {
     getLocations().then((results) => {
-        console.log("[getLocations-server]", results);
+        //console.log("[getLocations-server]", results);
         response.json(results);
     });
 });
 
 app.get("/api/search", (request, response) => {
     getResultsINeedHelp(request.query).then((results) => {
-        console.log("[getResultsINeedHelp-server]", results);
+        console.log("[getResultsINeedHelp-server]", request.query);
+
         response.json(results);
     });
 });

@@ -14,7 +14,7 @@ const db = spicedPg(getDataBaseURL());
 
 function getLocations() {
     return db.query(`SELECT * from locations`).then((results) => {
-        console.log("[getlocations-db]", results.rows);
+        //console.log("[getlocations-db]", results.rows);
         return results.rows;
     });
 }
@@ -31,11 +31,20 @@ function getResultsINeedHelp({ time_slot, size, origin_id, destination_id }) {
                     ON(origin.id = availabilities.origin_id)
                     LEFT JOIN locations AS destination
                     ON(destination.id = availabilities.destination_id) 
-                    WHERE availabilities.time_slot = $1 AND availabilities.size = $2 AND availabilities.origin_id = $3 AND availabilities.destination_id = $4;`,
+                    WHERE availabilities.time_slot = $1 
+                    AND availabilities.size = $2 
+                    AND availabilities.origin_id = $3 
+                    AND availabilities.destination_id = $4;`,
             [time_slot, size, origin_id, destination_id]
         )
         .then((results) => {
-            console.log("getResultsINeedHelp-db", results.rows);
+            //console.log("getResultsINeedHelp-db", results.rows);
+            console.log("[getResultsINeedHelp]", {
+                time_slot,
+                size,
+                origin_id,
+                destination_id,
+            });
             return results.rows;
         });
 }

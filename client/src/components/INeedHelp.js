@@ -2,8 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "../axios";
 export default function INeedHelp() {
     const [locations, setLocations] = useState([]);
-    const [query, setQuery] = useState({});
-    // const [results,setResults] = useState()
+    const [results, setResults] = useState([]);
+    const [query, setQuery] = useState({
+        size: "M",
+        time_slot: "daily",
+        origin_id: 1,
+        destination_id: 2,
+    });
+
     useEffect(() => {
         axios.get("/api/locations").then((response) => {
             console.log("[getlocations]", response.data);
@@ -13,7 +19,7 @@ export default function INeedHelp() {
 
     function getValuesFromLocations() {
         return locations.map((location) => {
-            console.log("location-react-16", location);
+            //console.log("location-react-16", location);
             return (
                 <option key={location.id} value={location.id}>
                     {location.name}
@@ -34,29 +40,46 @@ export default function INeedHelp() {
         event.preventDefault();
         axios.get("/api/search", { params: query }).then((response) => {
             console.log("[response.data-api/search]", response.data);
+            setResults(response.data);
         });
         console.log("submitted!");
     }
 
+    function showResults() {
+        if (results.length == 0) {
+            return <li> We are Sorry!! Try again!!</li>;
+        }
+        return results.map((result) => {
+            <li key={result.id}>
+                <div>
+                    <p>result.first_name</p>
+                    <p>result.origin_name</p>
+                    <p>result.destination_name</p>
+                    <p>result.size</p>
+                    <p>result.time_slot</p>
+                </div>
+            </li>;
+        });
+    }
+
     return (
         <section className="need-help">
-            <h1>I need help</h1>
             <form onSubmit={handleSubmit}>
                 <label>From</label>
-                <select name="origin_id" onChange={handleChange}>
+                <select name="origin_id" onChange={handleChange} value={1}>
                     {getValuesFromLocations()}
                 </select>
 
                 <label>To</label>
-                <select name="destination_id" onChange={handleChange}>
+                <select name="destination_id" onChange={handleChange} value={2}>
                     {getValuesFromLocations()}
                 </select>
 
                 <label>Package-Size</label>
                 <select onChange={handleChange} name="size">
-                    <option value="small">S</option>
-                    <option value="medium">M</option>
-                    <option value="large">L</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
                 </select>
 
                 <label>Time-Slot</label>
@@ -67,6 +90,10 @@ export default function INeedHelp() {
                 </select>
                 <button type="submit">Search</button>
             </form>
+
+            <div className="results">
+                <ul>{showResults()}</ul>
+            </div>
         </section>
     );
 }
