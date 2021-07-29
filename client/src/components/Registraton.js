@@ -105,9 +105,9 @@ export default class Registration extends Component {
                         </Link>
                     </div>
                 </form>
-                {/* {this.state.errorMessage && (
-                    <p className="error">{this.state.errorMessage}</p>
-                )} */}
+                {this.state.errorMessage && (
+                    <p className="error">{this.state.error}</p>
+                )}
             </div>
         );
     }

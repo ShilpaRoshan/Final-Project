@@ -74,7 +74,7 @@ export default class App extends Component {
             <BrowserRouter>
                 <div className="app">
                     <header>
-                        <h4 className="logo-app">Logo</h4>
+                        <h4 className="logo-app">Socialnetwork</h4>
 
                         <nav>
                             <ul className="nav-links">

@@ -80,7 +80,7 @@ export default class Login extends Component {
                     </div>
                 </form>
                 {this.state.errorMessage && (
-                    <p className="error">{this.state.errorMessage}</p>
+                    <p className="error">{this.state.error}</p>
                 )}
             </div>
         );
