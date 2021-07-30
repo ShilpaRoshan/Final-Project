@@ -23,7 +23,7 @@ function getResultsINeedHelp({ time_slot, size, origin_id, destination_id }) {
     return db
         .query(
             `SELECT users.first_name, availabilities.time_slot, availabilities.size, origin.name AS origin_name,
-                    destination.name AS destination_name
+                    destination.name AS destination_name, availabilities.id
                     FROM users
                     JOIN availabilities
                     ON(availabilities.user_id = users.id)
@@ -49,11 +49,85 @@ function getResultsINeedHelp({ time_slot, size, origin_id, destination_id }) {
         });
 }
 
+// function getRelation({ requester_id, carrier_id }) {
+//     return db
+//         .query(
+//             `SELECT * FROM deliveries
+//                     WHERE requester_id = $1 AND carrier_id = $2
+//                     OR requester_id = $2 AND carrier_id = $1`,
+//             [requester_id, carrier_id]
+//         )
+//         .then((result) => {
+//             console.log("[getRelation]", result.rows[0]);
+//             return result.rows[0];
+//         });
+// }
+
+function createDelivery({ requester_id, carrier_id, status }) {
+    return db
+        .query(
+            `INSERT INTO deliveries (requester_id, carrier_id, status) VALUES ($1, $2, $3) RETURNING *`,
+            [requester_id, carrier_id, status]
+        )
+        .then((results) => {
+            console.log("[createDelivery- db-file]", results.rows[0]);
+            return results.rows[0];
+        });
+}
+function updateStatus({ requester_id, carrier_id, status }) {
+    return db
+        .query(
+            `UPDATE deliveries SET status = $1 WHERE requester_id = $2 AND carrier_id = $3 RETURNING *`,
+            [requester_id, carrier_id, status]
+        )
+        .then((result) => {
+            console.log("[updateStatus]", result.rows[0]);
+            return result.rows[0];
+        });
+}
+function getAvailabilityById(id) {
+    return db
+        .query(`SELECT * FROM availabilities WHERE id = $1`, [id])
+        .then((result) => {
+            return result.rows[0];
+        });
+}
+function updateAvailabilityById(id) {
+    return db
+        .query(`UPDATE * FROM availabilities WHERE id =$1`, [id])
+        .then((result) => {
+            console.log("[updateAvailabilityById]", result.rows[0]);
+            return result.rows[0];
+        });
+}
+function getDeliveriesByCarrierId(carrier_id) {
+    return db
+        .query(`SELECT * FROM deliveries WHERE carrier_id = $1`, [carrier_id])
+        .then((result) => {
+            console.log("[getDeliveriesByCarrierId]", result.rows);
+            return result.rows;
+        });
+}
+function getDeliveriesByRequestorId(requester_id) {
+    return db
+        .query(`SELECT * FROM deliveries WHERE requester_id = $1`, [
+            requester_id,
+        ])
+        .then((result) => {
+            console.log("[getDeliveriesByRequestorId]", result.rows);
+            return result.rows;
+        });
+}
 module.exports = {
     // allUsers,
     getLocations,
-
     getResultsINeedHelp,
+    createDelivery,
+    updateStatus,
+    getAvailabilityById,
+    getDeliveriesByCarrierId,
+    getDeliveriesByRequestorId,
+    updateAvailabilityById,
 };
 
 //  INSERT INTO delivery (origin,destination,time,size,usertype,means) VALUES ('Prenzlauer Berg','Charlottenburg','weekend','M','A');

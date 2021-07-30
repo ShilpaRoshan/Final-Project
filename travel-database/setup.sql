@@ -36,15 +36,7 @@ CREATE TABLE availabilities(
 -- INSERT INTO locations (id, name) VALUES (1,'Charlottenburg'),(2,'Wedding');
 -- INSERT INTO availabilities (user_id, origin_id, destination_id,time_slot, size) VALUES (2,1,2,'daily','M');
 
--- SELECT first_name, last_name, user_profiles.age, user_profiles.city ,
--- user_profiles.url 
--- FROM users 
--- JOIN signatures 
--- ON signatures.user_id = users.id 
--- LEFT JOIN user_profiles 
--- ON user_profiles.user_id = users.id 
--- WHERE signatures.signature IS NOT NULL"
--- )
+
 
 -- SELECT users.first_name, availabilities.time_slot, availabilities.size, locations.name
 -- FROM users
