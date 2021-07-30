@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import INeedHelp from "./INeedHelp.js";
 import ICanHelp from "./ICanHelp";
+import Login from "./Login";
 // import { useState, useEffect } from "react-redux";
 // import axios from "../axios";
 
@@ -12,6 +13,9 @@ export default function App() {
                     <nav>
                         <ul>
                             <li>
+                                <Link to="/login">Login</Link>
+                            </li>
+                            <li>
                                 <Link to="/need-help"> I need Help</Link>
                             </li>
                             <li>
@@ -20,7 +24,9 @@ export default function App() {
                         </ul>
                     </nav>
                 </header>
-
+                <Route path="/login">
+                    <Login></Login>
+                </Route>
                 <Route path="/need-help">
                     <h1>I need help</h1>
                     <INeedHelp />

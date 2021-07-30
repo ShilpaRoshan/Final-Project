@@ -12,6 +12,15 @@ function getDataBaseURL() {
 }
 const db = spicedPg(getDataBaseURL());
 
+function getUserByEmail(email) {
+    return db
+        .query(`SELECT * FROM users WHERE email LIKE $1`, [email])
+        .then((result) => {
+            console.log("[getUserByEmail-db]", result.rows[0]);
+            return result.rows[0];
+        });
+}
+
 function getLocations() {
     return db.query(`SELECT * from locations`).then((results) => {
         //console.log("[getlocations-db]", results.rows);
@@ -120,6 +129,7 @@ function getDeliveriesByRequestorId(requester_id) {
 }
 module.exports = {
     // allUsers,
+    getUserByEmail,
     getLocations,
     getResultsINeedHelp,
     createDelivery,

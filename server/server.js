@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 
 const {
+    getUserByEmail,
     getLocations,
     getResultsINeedHelp,
     createDelivery,
@@ -41,11 +42,20 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 app.get("/user/id.json", (request, response) => {
-    request.session.userId = 1;
+    //request.session.userId = 1;
     response.json({
-        id: 1,
+        id: request.session.userId,
     });
     console.log("[id.json]", request.session.userId);
+});
+app.post("/api/login", (request, response) => {
+    const { email } = request.body;
+    if (email === "helpplease@gmail.com") {
+        request.session.userId = 1;
+    } else if (email === "canhelp@gmail.com") {
+        request.session.userId = 2;
+    }
+    response.json({ message: "login successful!" });
 });
 app.get("/api/locations", (request, response) => {
     getLocations().then((results) => {
