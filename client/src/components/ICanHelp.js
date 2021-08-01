@@ -43,35 +43,65 @@ export default function ICanHelp() {
     return (
         <BrowserRouter>
             <section className="need-help">
-                <form onSubmit={onHandleSubmit}>
-                    <label>From</label>
-                    <select name="origin_id" onChange={handleChange} value={1}>
-                        {getValuesFromLocations()}
-                    </select>
+                <form
+                    onSubmit={onHandleSubmit}
+                    className="help-form help-form-center"
+                >
+                    <div className="help-form-wrapper">
+                        <div className="help-form-content">
+                            <label>From</label>
+                            <select
+                                name="origin_id"
+                                onChange={handleChange}
+                                value={1}
+                                className="location-drop-down"
+                            >
+                                {getValuesFromLocations()}
+                            </select>
+                        </div>
 
-                    <label>To</label>
-                    <select
-                        name="destination_id"
-                        onChange={handleChange}
-                        value={2}
-                    >
-                        {getValuesFromLocations()}
-                    </select>
+                        <div className="help-form-content">
+                            <label>To</label>
+                            <select
+                                name="destination_id"
+                                onChange={handleChange}
+                                value={2}
+                                className="location-drop-down"
+                            >
+                                {getValuesFromLocations()}
+                            </select>
+                        </div>
 
-                    <label>Package-Size</label>
-                    <select onChange={handleChange} name="size">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                    </select>
+                        <div className="help-form-content">
+                            <label>Package-Size</label>
+                            <select
+                                onChange={handleChange}
+                                name="size"
+                                className="size-drop-down"
+                            >
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                            </select>
+                        </div>
 
-                    <label>Time-Slot</label>
-                    <select onChange={handleChange} name="time_slot">
-                        <option value="daily">Daily</option>
-                        <option value="weekend">Weekend</option>
-                        <option value="flexible">Flexible</option>
-                    </select>
-                    <button type="submit">Done</button>
+                        <div className="help-form-content">
+                            <label>Time-Slot</label>
+                            <select
+                                onChange={handleChange}
+                                name="time_slot"
+                                className="drop-down"
+                            >
+                                <option value="daily">Daily</option>
+                                <option value="weekend">Weekend</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" className="search-button">
+                        Done
+                    </button>
                 </form>
                 <Link to="/incoming-list"> Incoming-request-list</Link>
                 <Route path="/incoming-list">

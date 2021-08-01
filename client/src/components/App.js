@@ -11,15 +11,25 @@ export default function App() {
             <div className="app">
                 <header>
                     <nav>
-                        <ul>
+                        <p className="logo">Holen</p>
+                        <ul className="nav-list-container">
                             {/* <li>
                                 <Link to="/login">Login</Link>
                             </li> */}
-                            <li>
-                                <Link to="/need-help"> I need Help</Link>
+                            <li className="nav-link">
+                                <Link
+                                    to="/need-help"
+                                    className="nav-link-value"
+                                >
+                                    {" "}
+                                    I need Help
+                                </Link>
                             </li>
-                            <li>
-                                <Link to="/can-help"> I can Help</Link>
+                            <li className="nav-link">
+                                <Link to="/can-help" className="nav-link-value">
+                                    {" "}
+                                    I can Help
+                                </Link>
                             </li>
                         </ul>
                     </nav>
@@ -28,11 +38,16 @@ export default function App() {
                     <Login></Login>
                 </Route> */}
                 <Route path="/need-help">
-                    <h1>I need help</h1>
+                    <p className="main-content">
+                        Holen is a eco-friendly solution to maximise the utility
+                        of people on the move. Find people who are moving
+                        between destiantions of your choice and you can either
+                        send or receive packages through them!
+                    </p>
                     <INeedHelp />
                 </Route>
                 <Route path="/can-help">
-                    <h1>I can help</h1>
+                    <h1 className="main-content">I can help</h1>
                     <ICanHelp />
                 </Route>
             </div>

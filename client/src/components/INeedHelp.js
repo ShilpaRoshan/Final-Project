@@ -61,28 +61,15 @@ export default function INeedHelp() {
     function showResults() {
         return results.map((result) => {
             return (
-                <li key={result.id}>
-                    <div>
-                        <h3>Name :</h3>
-                        <p>{result.first_name}</p>
-                    </div>
-                    <div>
-                        <h3>From :</h3>
-                        <p>{result.origin_name}</p>
-                    </div>
-                    <div>
-                        <h3>To :</h3>
-                        <p>{result.destination_name}</p>
-                    </div>
-                    <div>
-                        <h3>Size :</h3>
-                        <p>{result.size}</p>
-                    </div>
-                    <div>
-                        <h3>Time :</h3>
-                        <p>{result.time_slot}</p>
-                    </div>
-                    <button onClick={() => onHelpClick(result.id)}>
+                <li key={result.id} className="search-list-result">
+                    <p className="list-name">
+                        {result.first_name} {result.last_name}
+                    </p>
+
+                    <button
+                        onClick={() => onHelpClick(result.id)}
+                        className="send-request-button"
+                    >
                         Send Request
                     </button>
                 </li>
@@ -92,35 +79,64 @@ export default function INeedHelp() {
 
     return (
         <section className="need-help">
-            <form onSubmit={handleSubmit}>
-                <label>From</label>
-                <select name="origin_id" onChange={handleChange} value={1}>
-                    {getValuesFromLocations()}
-                </select>
+            <form onSubmit={handleSubmit} className="help-form">
+                <div className="help-form-wrapper">
+                    {" "}
+                    <div className="help-form-content">
+                        <label>From</label>
+                        <select
+                            name="origin_id"
+                            onChange={handleChange}
+                            value={1}
+                            className="location-drop-down"
+                        >
+                            {getValuesFromLocations()}
+                        </select>
+                    </div>
+                    <div className="help-form-content">
+                        <label>To</label>
+                        <select
+                            name="destination_id"
+                            onChange={handleChange}
+                            value={2}
+                            className="location-drop-down"
+                        >
+                            {getValuesFromLocations()}
+                        </select>
+                    </div>
+                    <div className="help-form-content">
+                        <label>Size</label>
+                        <select
+                            onChange={handleChange}
+                            name="size"
+                            className="size-drop-down"
+                        >
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div className="help-form-content">
+                        <label>When</label>
+                        <select
+                            onChange={handleChange}
+                            name="time_slot"
+                            className="drop-down"
+                        >
+                            <option value="daily">Daily</option>
+                            <option value="weekend">Weekend</option>
+                            <option value="flexible">Flexible</option>
+                        </select>
+                    </div>
+                </div>
 
-                <label>To</label>
-                <select name="destination_id" onChange={handleChange} value={2}>
-                    {getValuesFromLocations()}
-                </select>
-
-                <label>Package-Size</label>
-                <select onChange={handleChange} name="size">
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                </select>
-
-                <label>Time-Slot</label>
-                <select onChange={handleChange} name="time_slot">
-                    <option value="daily">Daily</option>
-                    <option value="weekend">Weekend</option>
-                    <option value="flexible">Flexible</option>
-                </select>
-                <button type="submit">Search</button>
+                <button type="submit" className="search-button">
+                    Search
+                </button>
             </form>
 
             <div className="results">
-                <ul>{showResults()}</ul>
+                <ul className="search-results">{showResults()}</ul>
             </div>
         </section>
     );

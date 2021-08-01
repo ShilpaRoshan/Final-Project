@@ -31,7 +31,7 @@ function getLocations() {
 function getResultsINeedHelp({ time_slot, size, origin_id, destination_id }) {
     return db
         .query(
-            `SELECT users.first_name, availabilities.time_slot, availabilities.size, origin.name AS origin_name,
+            `SELECT users.first_name, users.last_name, availabilities.time_slot, availabilities.size, origin.name AS origin_name,
                     destination.name AS destination_name, availabilities.id
                     FROM users
                     JOIN availabilities
@@ -43,7 +43,7 @@ function getResultsINeedHelp({ time_slot, size, origin_id, destination_id }) {
                     WHERE availabilities.time_slot = $1 
                     AND availabilities.size = $2 
                     AND availabilities.origin_id = $3 
-                    AND availabilities.destination_id = $4;`,
+                    AND availabilities.destination_id = $4`,
             [time_slot, size, origin_id, destination_id]
         )
         .then((results) => {
