@@ -11,9 +11,10 @@ export default function Login() {
         });
     }
     function handleSubmit(event) {
-        axios.post("/api/login", (response) => {
+        event.preventDefault();
+        axios.post("/api/login", data).then((response) => {
             console.log("[/api/login]", response.data);
-            window.location = "/";
+            window.location.reload();
         });
     }
     return (

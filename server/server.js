@@ -6,13 +6,15 @@ const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 
 const {
-    getUserByEmail,
+    // getUserByEmail,
     getLocations,
     getResultsINeedHelp,
     createDelivery,
-    updateStatus,
+    updateDeliveryStatus,
     getAvailabilityById,
     updateAvailabilityById,
+    getDeliveryByAvalAndUser,
+    getDeliveriesByCarrierId,
 } = require("../db");
 
 const app = express();
@@ -52,11 +54,14 @@ app.post("/api/login", (request, response) => {
     const { email } = request.body;
     if (email === "helpplease@gmail.com") {
         request.session.userId = 1;
+        console.log("[request.session.userId]", request.session.userId);
     } else if (email === "canhelp@gmail.com") {
         request.session.userId = 2;
+        console.log("[request.session.userId]", request.session, request.body);
     }
     response.json({ message: "login successful!" });
 });
+//to get the locations in the drop-down of forms(I need help & i can help)
 app.get("/api/locations", (request, response) => {
     getLocations().then((results) => {
         //console.log("[getLocations-server]", results);
@@ -64,6 +69,7 @@ app.get("/api/locations", (request, response) => {
     });
 });
 
+//to get list of people who can help after filling in the form of I need help
 app.get("/api/search", (request, response) => {
     getResultsINeedHelp(request.query).then((results) => {
         console.log("[getResultsINeedHelp-server]", request.query);
@@ -71,19 +77,8 @@ app.get("/api/search", (request, response) => {
     });
 });
 
-// buuton-send
-// app.get("/api/deliveries", (request, response) => {
-//     createDelivery({
-//         requester_id: request.session.userId,
-//         carrier_id: request.body.availability_id,
-//         status: "Pending",
-//     }).then((delivery) => {
-//         console.log("[createDelivery]", delivery);
-//         response.json(delivery);
-//     });
-// });
-
-app.post("/api/user/availability", async (request, response) => {
+//to check if there is an delivery with the 2 ids else create the deliveries database
+app.post("/api/deliveries", async (request, response) => {
     const availability = await getAvailabilityById(
         request.body.availability_id
     );
@@ -91,13 +86,17 @@ app.post("/api/user/availability", async (request, response) => {
     //2if there is existing delivery for availability_id & request.session.userId
     //response.statusCode = 400;
     //response.json({message:"existing"})
-    if (availability) {
-        response.statusCode = 400;
-        response.json({ message: "existing" });
-    }
+    getDeliveryByAvalAndUser({
+        carrier_id: availability.user_id,
+        requester_id: request.session.userId,
+    }).then((existingDelivery) => {
+        console.log("existingDelivery", existingDelivery);
+        if (existingDelivery) {
+            response.statusCode = 400;
+            response.json({ message: "existing" });
+        }
+    });
 
-    //1create new delievry with status pending
-    //app.get("")
     createDelivery({
         requester_id: request.session.userId,
         carrier_id: availability.user_id,
@@ -108,25 +107,44 @@ app.post("/api/user/availability", async (request, response) => {
     });
 });
 
+//to update the availabilities database from i can help component
 app.put("/api/user/availability", (response, request) => {
-    getAvailabilityById(request.session.userId).then((availability) => {
-        console.log("[availability-put]", availability);
-        updateAvailabilityById(availability.user_id).then((result) => {
-            console.log("[updateAvailabilityById]", result);
-            response.json(result);
-        });
+    console.log("hello!");
+    console.log("[request-body]", request.body);
+    console.log("[userId]", request.session);
+    const id = request.session.userId;
+    console.log("[userId]", id);
+
+    updateAvailabilityById({
+        id,
+        ...request.body,
+    }).then((result) => {
+        console.log("[updateAvailabilityById]", result);
+        response.json(result);
     });
 });
-
+//to update the status from pending to accepted or rejected
 app.put("/api/deliveries/:id", (request, response) => {
-    updateStatus({
-        requester_id: request.session.userId,
-        carrier_id: request.params.id,
-        status,
+    updateDeliveryStatus({
+        id: request.session.userId,
+        status: request.body.status,
     }).then((status) => {
         console.log("[updateStatus]", status);
         response.json(status);
     });
+});
+//to get the list of incoming requestes from the i need help component
+app.get("/api/deliveries/incoming", (request, response) => {
+    getDeliveriesByCarrierId({ carrier_id: request.session.userId }).then(
+        (list) => {
+            console.log("[getDeliveriesByCarrierId-server]", list);
+            response.json(list);
+        }
+    );
+    //method getDeliveries
+});
+app.get("/api/deliveries/requesters", (request, response) => {
+    //method getDeliveries
 });
 
 app.get("*", function (request, response) {

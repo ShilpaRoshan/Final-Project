@@ -12,14 +12,14 @@ function getDataBaseURL() {
 }
 const db = spicedPg(getDataBaseURL());
 
-function getUserByEmail(email) {
-    return db
-        .query(`SELECT * FROM users WHERE email LIKE $1`, [email])
-        .then((result) => {
-            console.log("[getUserByEmail-db]", result.rows[0]);
-            return result.rows[0];
-        });
-}
+// function getUserByEmail(email) {
+//     return db
+//         .query(`SELECT * FROM users WHERE email LIKE $1`, [email])
+//         .then((result) => {
+//             console.log("[getUserByEmail-db]", result.rows[0]);
+//             return result.rows[0];
+//         });
+// }
 
 function getLocations() {
     return db.query(`SELECT * from locations`).then((results) => {
@@ -83,7 +83,7 @@ function createDelivery({ requester_id, carrier_id, status }) {
             return results.rows[0];
         });
 }
-function updateStatus({ requester_id, carrier_id, status }) {
+function updateDeliveryStatus({ requester_id, carrier_id, status }) {
     return db
         .query(
             `UPDATE deliveries SET status = $1 WHERE requester_id = $2 AND carrier_id = $3 RETURNING *`,
@@ -101,20 +101,36 @@ function getAvailabilityById(id) {
             return result.rows[0];
         });
 }
-function updateAvailabilityById(id) {
+function updateAvailabilityById({
+    destination_id,
+    origin_id,
+    size,
+    time_slot,
+    id,
+}) {
     return db
-        .query(`UPDATE * FROM availabilities WHERE id =$1`, [id])
+        .query(
+            `UPDATE availabilities SET availabilities.destination_id = $1, availabilities.origin_id = $2, availabilities.size = $3, availabilities.time_slot = $4  WHERE id = $5 RETURNING *`,
+            [destination_id, origin_id, size, time_slot, id]
+        ) //change the query
         .then((result) => {
             console.log("[updateAvailabilityById]", result.rows[0]);
             return result.rows[0];
         });
 }
-function getDeliveriesByCarrierId(carrier_id) {
+function getDeliveriesByCarrierId({ carrier_id }) {
     return db
-        .query(`SELECT * FROM deliveries WHERE carrier_id = $1`, [carrier_id])
-        .then((result) => {
-            console.log("[getDeliveriesByCarrierId]", result.rows);
-            return result.rows;
+        .query(
+            `SELECT deliveries.*, users.first_name, users.last_name
+            FROM users
+            JOIN deliveries
+            ON(deliveries.requester_id = users.id)
+            WHERE deliveries.carrier_id = $1`,
+            [carrier_id]
+        )
+        .then((results) => {
+            console.log("[getDeliveriesByCarrierId-db-file]", results.rows);
+            return results.rows;
         });
 }
 function getDeliveriesByRequestorId(requester_id) {
@@ -127,18 +143,29 @@ function getDeliveriesByRequestorId(requester_id) {
             return result.rows;
         });
 }
+
+function getDeliveryByAvalAndUser({ carrier_id, requester_id }) {
+    return db
+        .query(
+            `SELECT * from deliveries WHERE carrier_id = $1 AND requester_id = $2`,
+            [carrier_id, requester_id]
+        )
+        .then((existing) => {
+            console.log("[getDeliveryByAvalAndUser]", existing.rows[0]);
+            return existing.rows[0];
+        });
+}
 module.exports = {
     // allUsers,
-    getUserByEmail,
+    // getUserByEmail,
     getLocations,
     getResultsINeedHelp,
     createDelivery,
-    updateStatus,
+    updateDeliveryStatus,
     getAvailabilityById,
     getDeliveriesByCarrierId,
     getDeliveriesByRequestorId,
     updateAvailabilityById,
+    getDeliveryByAvalAndUser,
 };
-
-//  INSERT INTO delivery (origin,destination,time,size,usertype,means) VALUES ('Prenzlauer Berg','Charlottenburg','weekend','M','A');
-//  INSERT INTO delivery (origin,destination,time,size,usertype,means) VALUES('Prenzlauer Berg','Charlottenburg','weekend','M','B','bike');
+// WHERE deliveries.carrier_id = $1 AND status='Pending'

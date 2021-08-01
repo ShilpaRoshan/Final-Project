@@ -48,7 +48,7 @@ export default function INeedHelp() {
     function onHelpClick(id) {
         console.log("id", id);
         axios
-            .post(`/api/user/availability`, { availability_id: id })
+            .post(`/api/deliveries`, { availability_id: id })
             .then((response) => {
                 console.log(response.data);
                 alert("Request Sent!");

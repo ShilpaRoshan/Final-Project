@@ -12,9 +12,9 @@ export default function App() {
                 <header>
                     <nav>
                         <ul>
-                            <li>
+                            {/* <li>
                                 <Link to="/login">Login</Link>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link to="/need-help"> I need Help</Link>
                             </li>
@@ -24,9 +24,9 @@ export default function App() {
                         </ul>
                     </nav>
                 </header>
-                <Route path="/login">
+                {/* <Route path="/login">
                     <Login></Login>
-                </Route>
+                </Route> */}
                 <Route path="/need-help">
                     <h1>I need help</h1>
                     <INeedHelp />
