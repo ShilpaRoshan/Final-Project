@@ -83,12 +83,12 @@ function createDelivery({ requester_id, carrier_id, status }) {
             return results.rows[0];
         });
 }
-function updateDeliveryStatus({ requester_id, carrier_id, status }) {
+function updateDeliveryStatus({ status, id }) {
     return db
-        .query(
-            `UPDATE deliveries SET status = $1 WHERE requester_id = $2 AND carrier_id = $3 RETURNING *`,
-            [requester_id, carrier_id, status]
-        )
+        .query(`UPDATE deliveries SET status = $1 WHERE id= $2 RETURNING *`, [
+            status,
+            id,
+        ])
         .then((result) => {
             console.log("[updateStatus]", result.rows[0]);
             return result.rows[0];
@@ -101,20 +101,34 @@ function getAvailabilityById(id) {
             return result.rows[0];
         });
 }
+function getAvailabilityByUserId(id) {
+    return db
+        .query(`SELECT * FROM availabilities WHERE user_id = $1`, [id])
+        .then((result) => {
+            return result.rows[0];
+        });
+}
 function updateAvailabilityById({
     destination_id,
     origin_id,
     size,
     time_slot,
-    id,
+    user_id,
 }) {
     return db
         .query(
-            `UPDATE availabilities SET availabilities.destination_id = $1, availabilities.origin_id = $2, availabilities.size = $3, availabilities.time_slot = $4  WHERE id = $5 RETURNING *`,
-            [destination_id, origin_id, size, time_slot, id]
+            `UPDATE availabilities SET destination_id = $1, origin_id = $2, 
+            size = $3, time_slot = $4  WHERE user_id = $5 RETURNING *`,
+            [destination_id, origin_id, size, time_slot, user_id]
         ) //change the query
         .then((result) => {
-            console.log("[updateAvailabilityById]", result.rows[0]);
+            console.log("[updateAvailabilityById-db]", result.rows, [
+                destination_id,
+                origin_id,
+                size,
+                time_slot,
+                user_id,
+            ]);
             return result.rows[0];
         });
 }
@@ -155,6 +169,22 @@ function getDeliveryByAvalAndUser({ carrier_id, requester_id }) {
             return existing.rows[0];
         });
 }
+function getListOfUsersByAcceptedStatus({ carrier_id }) {
+    return db
+        .query(
+            `SELECT deliveries.*, users.first_name, users.last_name
+         FROM users
+         JOIN deliveries
+         ON(deliveries.requester_id = users.id) 
+         WHERE status = 'Accepted' AND carrier_id = $1`,
+            [carrier_id]
+        )
+        .then((results) => {
+            console.log("[getListOfUsersByStatus]", results.rows);
+            return results.rows;
+        });
+}
+
 module.exports = {
     // allUsers,
     // getUserByEmail,
@@ -167,5 +197,7 @@ module.exports = {
     getDeliveriesByRequestorId,
     updateAvailabilityById,
     getDeliveryByAvalAndUser,
+    getAvailabilityByUserId,
+    getListOfUsersByAcceptedStatus,
 };
 // WHERE deliveries.carrier_id = $1 AND status='Pending'

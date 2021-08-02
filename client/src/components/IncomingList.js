@@ -3,34 +3,98 @@ import axios from "../axios";
 
 export default function IncomingList() {
     const [requests, setRequests] = useState([]);
+    const [accpetedList, setAcceptedList] = useState([]);
 
     useEffect(() => {
         //for the incoming list values
         axios.get("/api/deliveries/incoming").then((response) => {
             console.log("[/api/deliveries/incoming]", response.data);
-            setRequests(response.data);
+            const data = response.data;
+            setRequests(data);
+        });
+
+        axios.get("/api/deliveries/accepted").then((response) => {
+            console.log("[/api/deliveries/accepted]", response.data);
+            setAcceptedList(response.data);
         });
     }, []);
 
+    function onAcceptClick(request) {
+        console.log("[Accept]", request);
+        axios
+            .put(`/api/deliveries/${request.id}`, { status: "Accepted" })
+            .then((response) => {
+                const data = [...requests];
+                data.find((x) => x.id == request.id).status = "Accepted";
+                console.log(data);
+                setRequests(data);
+            });
+    }
+    function onRejectClick(request) {
+        console.log("[reject]", request);
+        axios
+            .put(`/api/deliveries/${request.id}`, { status: "Rejected" })
+            .then((response) => {
+                const data = [...requests];
+                data.find((x) => x.id == request.id).status = "Rejected";
+                console.log(data);
+                setRequests(data);
+            });
+    }
+
     function showIncomingList() {
-        return requests.map((request) => {
-            return (
-                <li key={request.id}>
-                    <h3>Name</h3>
-                    <p>
-                        {request.first_name} {request.last_name}
-                    </p>
-                    <button>Accept</button>
-                    <button>Reject</button>
-                </li>
-            );
-        });
+        return requests
+            .filter((x) => x.status != "Rejected")
+            .map((request) => {
+                return (
+                    <li key={request.id} className="list-value">
+                        <h3>Name</h3>
+                        <p>
+                            {request.first_name} {request.last_name}
+                        </p>
+                        <div className="buttons-container">
+                            <button
+                                className="accept-button"
+                                onClick={() => onAcceptClick(request)}
+                            >
+                                Accept
+                            </button>
+                            <button
+                                className="reject-button"
+                                onClick={() => onRejectClick(request)}
+                            >
+                                Reject
+                            </button>
+                            <button className="contact-button">Contact</button>
+                        </div>
+                    </li>
+                );
+            });
+    }
+    function showAcceptedList() {
+        return accpetedList
+            .filter((x) => x.status == "Accepted")
+            .map((result) => {
+                return (
+                    <li key={result.id}>
+                        <h3>Name</h3>
+                        <h3>
+                            {result.first_name}
+                            {result.last_name}
+                        </h3>
+                    </li>
+                );
+            });
     }
 
     return (
-        <section>
-            <div className="results">
-                <ul>{showIncomingList()}</ul>
+        <section className="incoming-list-container">
+            <div className="incoming-list-results">
+                <ul className="list-container">{showIncomingList()}</ul>
+            </div>
+            <h2>Accepted List</h2>
+            <div className="accpeted-list">
+                <ul>{showAcceptedList()}</ul>
             </div>
         </section>
     );

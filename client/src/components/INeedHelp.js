@@ -87,7 +87,7 @@ export default function INeedHelp() {
                         <select
                             name="origin_id"
                             onChange={handleChange}
-                            value={1}
+                            value={query.origin_id}
                             className="location-drop-down"
                         >
                             {getValuesFromLocations()}
@@ -98,7 +98,7 @@ export default function INeedHelp() {
                         <select
                             name="destination_id"
                             onChange={handleChange}
-                            value={2}
+                            value={query.destination_id}
                             className="location-drop-down"
                         >
                             {getValuesFromLocations()}

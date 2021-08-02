@@ -177,3 +177,57 @@ label {
     font-family: "Lobster", cursive;
     font-weight: 40px;
 }
+
+/*Incoming-list*/
+.incoming-list {
+    font-size: 20px;
+    color: whitesmoke;
+}
+.incoming-list-container {
+    padding-top: 6rem;
+    height: 250px;
+}
+.incoming-list-results {
+    display: flex;
+    height: 200px;
+    justify-content: space-between;
+}
+.list-container {
+    display: flex;
+    margin: 10px;
+}
+.list-value {
+    list-style: none;
+    background-color: whitesmoke;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 10px;
+}
+.buttons-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.accept-button,
+.reject-button,
+.contact-button {
+    padding: 3px;
+    width: 65px;
+    background-color: #003566;
+    color: whitesmoke;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-family: "Lobster", cursive;
+    font-weight: 40px;
+}
+.accept-button {
+    background-color: forestgreen;
+}
+.reject-button {
+    background-color: orangered;
+}

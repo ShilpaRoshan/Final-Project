@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import INeedHelp from "./INeedHelp.js";
 import ICanHelp from "./ICanHelp";
+import IncomingList from "./IncomingList";
 import Login from "./Login";
 // import { useState, useEffect } from "react-redux";
 // import axios from "../axios";
@@ -49,6 +50,9 @@ export default function App() {
                 <Route path="/can-help">
                     <h1 className="main-content">I can help</h1>
                     <ICanHelp />
+                </Route>
+                <Route path="/incoming-list">
+                    <IncomingList />
                 </Route>
             </div>
         </BrowserRouter>

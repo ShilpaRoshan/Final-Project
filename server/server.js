@@ -15,6 +15,8 @@ const {
     updateAvailabilityById,
     getDeliveryByAvalAndUser,
     getDeliveriesByCarrierId,
+    getAvailabilityByUserId,
+    getListOfUsersByAcceptedStatus,
 } = require("../db");
 
 const app = express();
@@ -94,29 +96,32 @@ app.post("/api/deliveries", async (request, response) => {
         if (existingDelivery) {
             response.statusCode = 400;
             response.json({ message: "existing" });
+            return;
         }
-    });
-
-    createDelivery({
-        requester_id: request.session.userId,
-        carrier_id: availability.user_id,
-        status: "Pending",
-    }).then((delivery) => {
-        console.log("[createDelivery]", delivery);
-        response.json({ delivery });
+        createDelivery({
+            requester_id: request.session.userId,
+            carrier_id: availability.user_id,
+            status: "Pending",
+        }).then((delivery) => {
+            console.log("[createDelivery]", delivery);
+            response.json({ delivery });
+        });
     });
 });
-
+app.get("/api/user/availability", async (request, response) => {
+    const value = await getAvailabilityByUserId(request.session.userId);
+    response.json(value);
+});
 //to update the availabilities database from i can help component
-app.put("/api/user/availability", (response, request) => {
-    console.log("hello!");
+app.put("/api/user/availability", (request, response) => {
+    //console.log("hello!");
     console.log("[request-body]", request.body);
-    console.log("[userId]", request.session);
-    const id = request.session.userId;
-    console.log("[userId]", id);
+    //console.log("[userId]", request.session);
+    const user_id = request.session.userId;
+    console.log("[userId]", user_id);
 
     updateAvailabilityById({
-        id,
+        user_id,
         ...request.body,
     }).then((result) => {
         console.log("[updateAvailabilityById]", result);
@@ -126,7 +131,7 @@ app.put("/api/user/availability", (response, request) => {
 //to update the status from pending to accepted or rejected
 app.put("/api/deliveries/:id", (request, response) => {
     updateDeliveryStatus({
-        id: request.session.userId,
+        id: request.params.id,
         status: request.body.status,
     }).then((status) => {
         console.log("[updateStatus]", status);
@@ -143,8 +148,17 @@ app.get("/api/deliveries/incoming", (request, response) => {
     );
     //method getDeliveries
 });
-app.get("/api/deliveries/requesters", (request, response) => {
+app.get("/api/deliveries/requested", (request, response) => {
     //method getDeliveries
+});
+
+app.get("/api/deliveries/accepted", (request, response) => {
+    getListOfUsersByAcceptedStatus({ carrier_id: request.session.userId }).then(
+        (list) => {
+            console.log("[getListOfUsersByStatus]", list);
+            response.json(list);
+        }
+    );
 });
 
 app.get("*", function (request, response) {
