@@ -64,10 +64,44 @@ nav {
     color: whitesmoke;
     text-align: center;
 }
+.about-us {
+    display: flex;
+    justify-content: center;
+}
+.about-us-container {
+    display: flex;
+    flex-direction: column;
+}
+.each-list {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+.each-list .city {
+    max-width: 80px;
+    height: 80px;
+    object-fit: cover;
+    align-self: flex-start;
+}
+.box {
+    max-width: 110px;
+    height: 110px;
+    object-fit: cover;
+    padding-right: 20px;
+}
+.city-para {
+    padding-left: 20px;
+    font-family: "Montserrat", sans-serif;
+    color: whitesmoke;
+}
+.box-para {
+    font-family: "Montserrat", sans-serif;
+    color: whitesmoke;
+}
 
 /* need-help-form*/
 .need-help {
-    height: 100vh;
+    /* height: 90vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -81,7 +115,7 @@ nav {
 }
 .help-form {
     height: 250px;
-    width: 1000px;
+    /* width: 1000px; */
     display: flex;
     flex-direction: column;
     margin: 1rem 1rem;
@@ -89,6 +123,12 @@ nav {
     border-radius: 20px;
     color: black;
 }
+.help-form:hover {
+    box-shadow: inset 0 0 0 10px #cfae06;
+}
+/* main:hover {
+    box-shadow: inset 0 0 0 20px #cfae06;
+} */
 .help-form-center {
     margin-bottom: 2rem;
 }
@@ -122,7 +162,7 @@ label {
     border-radius: 20px;
 }
 .drop-down {
-    width: 70px;
+    width: 100px;
     height: 40px;
     font-size: 17px;
     border-radius: 20px;
@@ -137,7 +177,7 @@ label {
     border: none;
     border-radius: 30px;
     font-size: 20px;
-    font-family: "Lobster", cursive;
+    font-family: "Montserrat", sans-serif;
     font-weight: 50px;
 }
 
@@ -148,7 +188,7 @@ label {
 }
 .search-results {
     display: flex;
-    flex-direction: column;
+
     height: 200px;
 }
 .search-list-result {
@@ -161,6 +201,7 @@ label {
     align-items: center;
     background-color: whitesmoke;
     color: #003566;
+    margin: 10px;
 }
 .list-name {
     font-size: 20px;
@@ -173,9 +214,43 @@ label {
     color: whitesmoke;
     border: none;
     border-radius: 30px;
-    font-size: 20px;
-    font-family: "Lobster", cursive;
+    font-size: 18px;
+    font-family: "Montserrat", sans-serif;
     font-weight: 40px;
+}
+.can-help-about-container {
+    display: flex;
+    justify-content: center;
+}
+.can-help-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.about-list {
+    display: flex;
+    list-style: none;
+    margin: 10px;
+}
+
+.money {
+    max-width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 10px;
+}
+.environment {
+    max-width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 10px;
+}
+.money-para,
+.environment-para {
+    align-self: center;
+    font-family: "Montserrat", sans-serif;
+    color: whitesmoke;
 }
 
 /*Incoming-list*/
@@ -190,7 +265,7 @@ label {
 .incoming-list-results {
     display: flex;
     height: 200px;
-    justify-content: space-between;
+    justify-content: center;
 }
 .list-container {
     display: flex;
@@ -221,13 +296,127 @@ label {
     color: whitesmoke;
     border: none;
     border-radius: 30px;
-    font-size: 20px;
-    font-family: "Lobster", cursive;
+    font-size: 15px;
+    font-family: "Montserrat", sans-serif;
     font-weight: 40px;
 }
 .accept-button {
-    background-color: forestgreen;
+    background-color: rgb(8, 99, 8);
 }
 .reject-button {
-    background-color: orangered;
+    background-color: rgb(190, 9, 9);
+}
+
+/*Accepted-list*/
+.accepted-list {
+    display: flex;
+}
+.accepted-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.list-accepted {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 10px;
+    background-color: whitesmoke;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+.header-accepted {
+    padding-left: 40px;
+    color: whitesmoke;
+}
+
+/*login form*/
+.login-form-container {
+    display: flex;
+    justify-content: center;
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+    justify-content: center;
+
+    width: 450px;
+    height: 250px;
+    margin-top: 9rem;
+    border-radius: 20px;
+}
+.main-header {
+    align-self: center;
+    color: #003566;
+    font-size: 2rem;
+}
+.login-form > input {
+    height: 35px;
+    align-self: center;
+    padding: 5px;
+    margin: 8px;
+    width: 170px;
+}
+.login-form > button {
+    height: 35px;
+    align-self: center;
+    width: 90px;
+    font-size: 20px;
+    font-family: "Montserrat", sans-serif;
+
+    background-color: #003566;
+    color: whitesmoke;
+}
+@media screen and (min-width: 800px) {
+    .help-form {
+        width: 700px;
+    }
+}
+@media screen and (max-width: 800px) {
+    nav {
+        width: 100%;
+    }
+    .logo {
+        padding-left: 3rem;
+    }
+    .nav-link {
+        padding: 3rem;
+    }
+    .help-form {
+        width: 600px;
+        justify-content: center;
+        align-self: center;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .main-content {
+        padding-top: 5rem;
+        width: 350px;
+        align-self: center;
+        font-size: 25px;
+        color: whitesmoke;
+        text-align: center;
+    }
+    .help-form {
+        width: 350px;
+        height: 550px;
+        justify-content: center;
+        align-self: center;
+    }
+    .help-form-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top: 70px;
+    }
+    .help-form-content {
+        display: flex;
+        flex-direction: column;
+    }
+    .search-button {
+        margin-top: 130px;
+    }
 }

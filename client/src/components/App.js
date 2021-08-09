@@ -13,6 +13,7 @@ export default function App() {
                 <header>
                     <nav>
                         <p className="logo">Holen</p>
+
                         <ul className="nav-list-container">
                             {/* <li>
                                 <Link to="/login">Login</Link>
@@ -45,10 +46,29 @@ export default function App() {
                         between destiantions of your choice and you can either
                         send or receive packages through them!
                     </p>
+                    <div className="about-us">
+                        <ul className="about-us-container">
+                            <li className="each-list">
+                                <img src="./box.png" className="box"></img>
+                                <p className="box-para">
+                                    Get things delivered to your doorstep
+                                </p>
+                            </li>
+                            <li className="each-list">
+                                <img src="./city.png" className="city"></img>
+                                <p className="city-para">
+                                    Delivery from anywhere in the city
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                     <INeedHelp />
                 </Route>
                 <Route path="/can-help">
-                    <h1 className="main-content">I can help</h1>
+                    <h1 className="main-content">
+                        Become a Holener and earn money!!
+                    </h1>
+
                     <ICanHelp />
                 </Route>
                 <Route path="/incoming-list">

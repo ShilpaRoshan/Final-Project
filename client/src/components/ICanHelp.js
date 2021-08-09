@@ -48,6 +48,22 @@ export default function ICanHelp() {
     }
     return (
         <section className="need-help">
+            <div className="can-help-about-container">
+                <ul className="can-help-wrapper">
+                    <li className="about-list">
+                        <img src="./money.jpeg" className="money"></img>
+
+                        <p className="money-para">Earn money.</p>
+                    </li>
+                    <li className="about-list">
+                        <img
+                            src="./environment.png"
+                            className="environment"
+                        ></img>
+                        <p className="environment-para">Save environment.</p>
+                    </li>
+                </ul>
+            </div>
             <form
                 onSubmit={onHandleSubmit}
                 className="help-form help-form-center"
@@ -78,7 +94,7 @@ export default function ICanHelp() {
                     </div>
 
                     <div className="help-form-content">
-                        <label>Package-Size</label>
+                        <label>Size</label>
                         <select
                             onChange={handleChange}
                             name="size"
@@ -92,7 +108,7 @@ export default function ICanHelp() {
                     </div>
 
                     <div className="help-form-content">
-                        <label>Time-Slot</label>
+                        <label>When</label>
                         <select
                             onChange={handleChange}
                             name="time_slot"

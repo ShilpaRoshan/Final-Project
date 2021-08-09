@@ -148,9 +148,6 @@ app.get("/api/deliveries/incoming", (request, response) => {
     );
     //method getDeliveries
 });
-app.get("/api/deliveries/requested", (request, response) => {
-    //method getDeliveries
-});
 
 app.get("/api/deliveries/accepted", (request, response) => {
     getListOfUsersByAcceptedStatus({ carrier_id: request.session.userId }).then(

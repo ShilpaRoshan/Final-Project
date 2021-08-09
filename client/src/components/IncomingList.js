@@ -3,7 +3,6 @@ import axios from "../axios";
 
 export default function IncomingList() {
     const [requests, setRequests] = useState([]);
-    const [accpetedList, setAcceptedList] = useState([]);
 
     useEffect(() => {
         //for the incoming list values
@@ -11,11 +10,6 @@ export default function IncomingList() {
             console.log("[/api/deliveries/incoming]", response.data);
             const data = response.data;
             setRequests(data);
-        });
-
-        axios.get("/api/deliveries/accepted").then((response) => {
-            console.log("[/api/deliveries/accepted]", response.data);
-            setAcceptedList(response.data);
         });
     }, []);
 
@@ -44,7 +38,7 @@ export default function IncomingList() {
 
     function showIncomingList() {
         return requests
-            .filter((x) => x.status != "Rejected")
+            .filter((x) => x.status == "Pending")
             .map((request) => {
                 return (
                     <li key={request.id} className="list-value">
@@ -59,6 +53,7 @@ export default function IncomingList() {
                             >
                                 Accept
                             </button>
+
                             <button
                                 className="reject-button"
                                 onClick={() => onRejectClick(request)}
@@ -72,11 +67,11 @@ export default function IncomingList() {
             });
     }
     function showAcceptedList() {
-        return accpetedList
+        return requests
             .filter((x) => x.status == "Accepted")
             .map((result) => {
                 return (
-                    <li key={result.id}>
+                    <li key={result.id} className="list-accepted">
                         <h3>Name</h3>
                         <h3>
                             {result.first_name}
@@ -92,9 +87,11 @@ export default function IncomingList() {
             <div className="incoming-list-results">
                 <ul className="list-container">{showIncomingList()}</ul>
             </div>
-            <h2>Accepted List</h2>
+            <h2 className="header-accepted">Accepted List</h2>
             <div className="accpeted-list">
-                <ul>{showAcceptedList()}</ul>
+                <ul className="accepted-list-container">
+                    {showAcceptedList()}
+                </ul>
             </div>
         </section>
     );

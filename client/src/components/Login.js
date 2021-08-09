@@ -18,8 +18,9 @@ export default function Login() {
         });
     }
     return (
-        <section className="login-form">
-            <form onSubmit={handleSubmit}>
+        <section className="login-form-container">
+            <form onSubmit={handleSubmit} className="login-form">
+                <h1 className="main-header">Delivery</h1>
                 <input
                     type="email"
                     name="email"
@@ -34,7 +35,9 @@ export default function Login() {
                     required
                     placeholder="Password"
                 ></input>
-                <button type="submit">LogIn</button>
+                <button type="submit" className="login">
+                    LogIn
+                </button>
             </form>
         </section>
     );
